@@ -1,0 +1,494 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AAC — Application</title>
+  <meta name="description" content="Application for a private, application-based leadership and formation community." />
+
+  <style>
+    :root{
+      --bg:#0b0f14;
+      --panel:#0f1724;
+      --panel2:rgba(17,24,38,.70);
+      --text:#e8eef6;
+      --muted:#b7c3d6;
+      --line:rgba(232,238,246,.14);
+      --btn:#2b67ff;
+      --btn2:rgba(232,238,246,.08);
+      --focus:rgba(43,103,255,.35);
+      --shadow: 0 18px 45px rgba(0,0,0,.35);
+      --radius: 18px;
+      --max: 1040px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      background: var(--bg);
+      color:var(--text);
+      line-height:1.5;
+      overflow-x:hidden;
+    }
+
+    /* Keep the gradient only at the top */
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0 0 auto 0;
+      height: 560px;
+      pointer-events:none;
+      z-index:-1;
+      background:
+        radial-gradient(1200px 700px at 20% 0%, rgba(43,103,255,.18), transparent 55%),
+        radial-gradient(900px 600px at 80% 10%, rgba(120,68,255,.12), transparent 50%);
+    }
+
+    a{color:inherit}
+    .wrap{
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 44px 18px 80px;
+    }
+
+    header{
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(17,24,38,.86), rgba(17,24,38,.58));
+      border-radius: var(--radius);
+      padding: 30px 24px;
+      box-shadow: var(--shadow);
+    }
+
+    .kicker{
+      color:var(--muted);
+      font-size: 12.5px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      margin:0 0 10px 0;
+    }
+
+    h1{
+      margin:0 0 10px 0;
+      font-size: 34px;
+      letter-spacing: -0.02em;
+    }
+
+    .sub{
+      margin:0 0 18px 0;
+      color:var(--muted);
+      font-size: 16px;
+      max-width: 78ch;
+    }
+
+    .cta{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top: 16px;
+      align-items:center;
+    }
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding: 11px 14px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      text-decoration:none;
+      font-weight: 650;
+      font-size: 14px;
+      outline:none;
+      cursor:pointer;
+      user-select:none;
+      white-space:nowrap;
+    }
+    .btn.primary{
+      background: var(--btn);
+      border-color: rgba(43,103,255,.55);
+      color: #fff;
+    }
+    .btn.secondary{
+      background: var(--btn2);
+    }
+    .btn:focus{ box-shadow: 0 0 0 4px var(--focus); }
+
+    .rule{
+      height:1px;
+      background: var(--line);
+      margin: 14px 0;
+    }
+
+    .small{
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    main{
+      margin-top: 16px;
+      display:grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap: 14px;
+    }
+    @media (max-width: 920px){
+      main{ grid-template-columns: 1fr; }
+    }
+
+    .card{
+      border: 1px solid var(--line);
+      background: var(--panel2);
+      border-radius: var(--radius);
+      padding: 18px 18px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.22);
+    }
+
+    .label{
+      display:inline-block;
+      font-size: 12px;
+      color: var(--muted);
+      border: 1px solid var(--line);
+      padding: 4px 8px;
+      border-radius: 999px;
+      margin: 0 0 10px 0;
+    }
+
+    h2{
+      margin: 0 0 10px 0;
+      font-size: 18px;
+      letter-spacing: -0.01em;
+    }
+
+    p{ margin: 0 0 10px 0; }
+    ul{
+      margin: 10px 0 0 18px;
+      padding: 0;
+    }
+    li{ margin: 6px 0; }
+
+    .grid2{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    @media (max-width: 620px){
+      .grid2{ grid-template-columns: 1fr; }
+    }
+
+    .notice{
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.18);
+      border-radius: 14px;
+      padding: 12px 12px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    /* Typeform embed */
+    .embedShell{
+      border: 1px solid var(--line);
+      background: rgba(0,0,0,.16);
+      border-radius: 16px;
+      overflow:hidden;
+    }
+    .embedHeader{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 10px;
+      padding: 12px 12px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(17,24,38,.55);
+    }
+    .embedHeader .left{
+      display:flex; flex-direction:column;
+      gap:2px;
+    }
+    .embedHeader .title{
+      font-weight: 700;
+      font-size: 14px;
+    }
+    .embedHeader .meta{
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    iframe{
+      display:block;
+      width:100%;
+      height: 760px;
+      border:0;
+      background: transparent;
+    }
+    @media (max-width: 520px){
+      iframe{ height: 860px; }
+    }
+
+    footer{
+      margin-top: 16px;
+      text-align:center;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    code.inline{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 12px;
+      padding: 2px 6px;
+      border-radius: 8px;
+      background: rgba(232,238,246,.08);
+      border: 1px solid var(--line);
+      color: var(--text);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <p class="kicker">Application Portal</p>
+      <h1>Alliance Advancing Christendom</h1>
+      <p class="sub">
+        This is a private, application-based membership initiative designed for church leaders and institutional decision-makers
+        carrying real responsibility for people, continuity, and long-term stability.
+      </p>
+
+      <div class="cta">
+        <button class="btn primary" id="ctaApply" type="button">Begin Application</button>
+        <a class="btn secondary" href="mailto:office@joinaacwarfare.com">Contact</a>
+      </div>
+
+      <div class="rule"></div>
+
+      <p class="small">
+        Submission does not imply acceptance. Applications are reviewed and followed up through the contact information you provide.
+      </p>
+    </header>
+
+    <main>
+      <section class="card" id="overview">
+        <span class="label">Purpose</span>
+        <h2>Why This Exists</h2>
+        <p>
+          Many churches remain spiritually sincere while becoming structurally underbuilt: the same small group carries responsibility,
+          formation becomes programming, and institutional stability depends on goodwill rather than durable systems.
+        </p>
+        <p>
+          This initiative is built to restore formation through structure—without importing secular models wholesale and without
+          diluting doctrine to “stay relevant.”
+        </p>
+
+        <div class="rule"></div>
+
+        <span class="label">Common Conditions</span>
+        <h2>What Leaders Are Experiencing</h2>
+        <div class="grid2">
+          <div class="notice">
+            <strong>Leadership bench is thin.</strong><br/>
+            There is no reliable path from attendee → contributor → leader, and continuity depends on a few individuals.
+          </div>
+          <div class="notice">
+            <strong>Men disengage without structure.</strong><br/>
+            Attendance is mistaken for formation; responsibility, discipline, and service are not cultivated systematically.
+          </div>
+          <div class="notice">
+            <strong>Operations feel fragile.</strong><br/>
+            Finances fluctuate with sentiment and crisis; there is limited asset logic aligned with mission.
+          </div>
+          <div class="notice">
+            <strong>Change carries risk.</strong><br/>
+            Past “new initiatives” fizzled out or divided people, creating caution by default.
+          </div>
+        </div>
+
+        <div class="rule"></div>
+
+        <span class="label">What You Receive</span>
+        <h2>What the Membership Provides</h2>
+        <ul>
+          <li><strong>Formation framework:</strong> a repeatable process to convert passive participation into responsibility.</li>
+          <li><strong>Operating doctrine:</strong> alignment across ministries under a coherent mission and standards.</li>
+          <li><strong>Men’s formation track:</strong> discipline, study, service, and accountability as a system—not a program.</li>
+          <li><strong>Institutional design support:</strong> clarity on governance, sustainability logic, and compounding effort.</li>
+        </ul>
+
+        <div class="rule"></div>
+
+        <span class="label">How It Works</span>
+        <h2>Application → Review</h2>
+        <p>
+          This page is designed to collect a structured application. The review process is handled after submission.
+          If the application is a fit, you will receive next steps directly.
+        </p>
+
+        <div class="rule"></div>
+
+        <span class="label">Affiliate Attribution</span>
+        <h2>Referral Code Handling</h2>
+        <p class="small">
+          If you arrive with a referral, the page captures <code class="inline">affiliate_code</code> from the URL and attaches it to your Typeform submission.
+          If you arrive without one, the application still submits normally.
+        </p>
+      </section>
+
+      <aside class="card" id="apply">
+        <span class="label">Application</span>
+        <h2>Begin Application</h2>
+        <p class="small" style="margin-bottom:12px;">
+          The form is embedded below. If it does not load, refresh once or use the fallback link.
+        </p>
+
+        <div class="embedShell">
+          <div class="embedHeader">
+            <div class="left">
+              <div class="title">AAC Application Form</div>
+              <div class="meta" id="refMeta">Referral: none detected</div>
+            </div>
+            <a class="btn secondary" id="fallbackLink" href="#" target="_blank" rel="noopener">Open in new tab</a>
+          </div>
+          <iframe
+            id="typeformFrame"
+            title="AAC Application Typeform"
+            loading="lazy"
+            allow="camera; microphone; autoplay; encrypted-media;"
+            src=""
+          ></iframe>
+        </div>
+
+        <div class="rule"></div>
+
+        <span class="label">Support</span>
+        <h2>Support</h2>
+        <p><strong>Email:</strong> <a href="mailto:office@joinaacwarfare.com">office@joinaacwarfare.com</a></p>
+        <p class="small">If you experience technical issues, include a screenshot and the URL you used to access this page.</p>
+      </aside>
+    </main>
+
+    <footer>
+      © <span id="y"></span> Alliance Advancing Christendom. All rights reserved.
+    </footer>
+  </div>
+
+  <script>
+    // ===========================
+    // CONFIG
+    // ===========================
+    const TYPEFORM_BASE = "https://jthvbx9jw3e.typeform.com/to/oGrQgCeU";
+    const PRIMARY_AFF_PARAM = "affiliate_code";
+
+    // Optional: map common partner/affiliate params if PRIMARY_AFF_PARAM is missing.
+    // Keep conservative to avoid false positives.
+    const FALLBACK_PARAMS = ["via", "ref", "referral", "partner", "aff", "affiliate"];
+
+    // ===========================
+    // HELPERS
+    // ===========================
+    function getQueryParams() {
+      return new URLSearchParams(window.location.search || "");
+    }
+
+    function getHashParams() {
+      // Supports URLs like: ...#affiliate_code=xxxxx
+      const raw = (window.location.hash || "").replace(/^#/, "");
+      return new URLSearchParams(raw);
+    }
+
+    function firstNonEmpty(params, keys) {
+      for (const k of keys) {
+        const v = params.get(k);
+        if (v && String(v).trim().length > 0) return String(v).trim();
+      }
+      return "";
+    }
+
+    function safeShort(code) {
+      if (!code) return "";
+      const s = String(code);
+      if (s.length <= 10) return s;
+      return s.slice(0, 4) + "…" + s.slice(-4);
+    }
+
+    // ===========================
+    // AFFILIATE CAPTURE + PERSIST
+    // ===========================
+    function resolveAffiliateCode() {
+      const qp = getQueryParams();
+      const hp = getHashParams();
+
+      // 1) Primary param from query or hash
+      let code = qp.get(PRIMARY_AFF_PARAM) || hp.get(PRIMARY_AFF_PARAM) || "";
+
+      // 2) If missing, try fallback params (query then hash)
+      if (!code) {
+        code = firstNonEmpty(qp, FALLBACK_PARAMS) || firstNonEmpty(hp, FALLBACK_PARAMS) || "";
+      }
+
+      // 3) Persist if found
+      if (code) {
+        try { localStorage.setItem("aac_affiliate_code", code); } catch (_) {}
+        return code;
+      }
+
+      // 4) If not found, attempt to restore
+      try {
+        const stored = localStorage.getItem("aac_affiliate_code") || "";
+        return stored;
+      } catch (_) {
+        return "";
+      }
+    }
+
+    // ===========================
+    // TYPEFORM URL BUILD
+    // ===========================
+    function buildTypeformUrl(affiliateCode) {
+      const url = new URL(TYPEFORM_BASE);
+
+      // Attach hidden field
+      if (affiliateCode) {
+        url.searchParams.set(PRIMARY_AFF_PARAM, affiliateCode);
+      }
+
+      // Preserve existing query params from landing URL (non-destructive)
+      // This is useful if Partnero (or others) append tracking params.
+      const landingQP = getQueryParams();
+      for (const [k, v] of landingQP.entries()) {
+        if (!url.searchParams.has(k)) {
+          url.searchParams.set(k, v);
+        }
+      }
+
+      return url.toString();
+    }
+
+    // ===========================
+    // INIT
+    // ===========================
+    (function init() {
+      // Year
+      document.getElementById("y").textContent = new Date().getFullYear();
+
+      // Scroll CTA
+      document.getElementById("ctaApply").addEventListener("click", () => {
+        const el = document.getElementById("apply");
+        el.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+
+      // Affiliate
+      const affiliateCode = resolveAffiliateCode();
+      const meta = document.getElementById("refMeta");
+      meta.textContent = affiliateCode
+        ? `Referral: ${safeShort(affiliateCode)}`
+        : "Referral: none detected";
+
+      // Embed
+      const tfUrl = buildTypeformUrl(affiliateCode);
+      document.getElementById("typeformFrame").src = tfUrl;
+      const fallback = document.getElementById("fallbackLink");
+      fallback.href = tfUrl;
+    })();
+  </script>
+</body>
+</html>
