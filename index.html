@@ -128,12 +128,9 @@
 
     main{
       margin-top: 16px;
-      display:grid;
-      grid-template-columns: 1.15fr .85fr;
+      display: flex;
+      flex-direction: column;
       gap: 14px;
-    }
-    @media (max-width: 920px){
-      main{ grid-template-columns: 1fr; }
     }
 
     .card{
@@ -218,12 +215,12 @@
     iframe{
       display:block;
       width:100%;
-      height: 760px;
+      height: 700px;
       border:0;
       background: transparent;
     }
     @media (max-width: 520px){
-      iframe{ height: 860px; }
+      iframe{ height: 800px; }
     }
 
     footer{
@@ -241,6 +238,43 @@
       background: rgba(232,238,246,.08);
       border: 1px solid var(--line);
       color: var(--text);
+    }
+
+    details{
+      margin-top: 12px;
+    }
+    details summary{
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 12px;
+      background: var(--btn2);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 14px;
+      user-select: none;
+      transition: background-color 0.2s ease;
+    }
+    details summary:hover{
+      background: rgba(232,238,246,.12);
+    }
+    details summary:focus{
+      outline: none;
+      box-shadow: 0 0 0 4px var(--focus);
+    }
+    details summary::before{
+      content: "▶";
+      display: inline-block;
+      transition: transform 0.2s ease;
+      font-size: 12px;
+    }
+    details[open] summary::before{
+      transform: rotate(90deg);
+    }
+    details[open] summary{
+      margin-bottom: 8px;
     }
   </style>
 </head>
@@ -267,7 +301,8 @@
     </header>
 
     <main>
-      <section class="card" id="overview">
+      <!-- 1) Purpose -->
+      <section class="card" id="purpose">
         <span class="label">Purpose</span>
         <h2>Why This Exists</h2>
         <p>
@@ -279,9 +314,10 @@
         <p>
           This system exists to address those structural problems directly—without asking you to overhaul your church, fight unnecessary battles, or become someone you are not.
         </p>
+      </section>
 
-        <div class="rule"></div>
-
+      <!-- 2) Common Conditions -->
+      <section class="card" id="conditions">
         <span class="label">Common Conditions</span>
         <h2>What Youth Ministers Are Experiencing</h2>
         <div class="grid2">
@@ -302,25 +338,28 @@
             Rest feels irresponsible because the system is fragile. Your absence exposes how much depends on you—emotionally, operationally, and spiritually.
           </div>
         </div>
-        <div class="rule"></div>
+      </section>
 
-<span class="label">Youth Pastors</span>
-<h2>A Direct Word to Youth Ministry Leadership</h2>
-<p>
-  You are operating at the fault line—between church leadership and parents, between institutional expectations and cultural reality, and between a spiritual calling and operational fragility.
-</p>
-<p>
-  You are expected to innovate, retain, disciple, protect, and stabilize—often simultaneously—while being discouraged from introducing the structure that would actually make those outcomes sustainable.
-</p>
-<p>
-  This system gives you language, structure, and a disciplined pathway you can implement inside reality: expectations that depersonalize discipline, roles that create a leadership bench, and rhythms that reduce dependence on you as the ministry's engine.
-</p>
-<p class="small">
-  If you want a ministry that survives your absence, retains students beyond graduation, and forms responsibility rather than chasing novelty, you are the intended applicant.
-</p>
+      <!-- 3) Youth Pastors -->
+      <section class="card" id="youthpastors">
+        <span class="label">Youth Pastors</span>
+        <h2>A Direct Word to Youth Ministry Leadership</h2>
+        <p>
+          You are operating at the fault line—between church leadership and parents, between institutional expectations and cultural reality, and between a spiritual calling and operational fragility.
+        </p>
+        <p>
+          You are expected to innovate, retain, disciple, protect, and stabilize—often simultaneously—while being discouraged from introducing the structure that would actually make those outcomes sustainable.
+        </p>
+        <p>
+          This system gives you language, structure, and a disciplined pathway you can implement inside reality: expectations that depersonalize discipline, roles that create a leadership bench, and rhythms that reduce dependence on you as the ministry's engine.
+        </p>
+        <p class="small">
+          If you want a ministry that survives your absence, retains students beyond graduation, and forms responsibility rather than chasing novelty, you are the intended applicant.
+        </p>
+      </section>
 
-
-        <div class="rule"></div>
+      <!-- 4) What You Receive -->
+      <section class="card" id="receive">
         <span class="label">What You Receive</span>
         <h2>The Bridge: From Event-Dependence to Durable Formation</h2>
         <p>
@@ -332,21 +371,24 @@
         <p>
           It replaces vague expectations with clear standards; replaces one-off events with repeatable rhythms; and creates a leadership bench that survives graduation cycles and leadership transitions.
         </p>
-        <ul>
-          <li><strong>Operating doctrine for youth ministry:</strong> a clear articulation of purpose, expectations, boundaries, and non-negotiables—so leadership is principled, not improvised.</li>
-          <li><strong>Student responsibility pathway:</strong> defined expectations by age and maturity—so students move from attendance to service to leadership in a visible progression.</li>
-          <li><strong>Named student leadership roles:</strong> specific roles that train students to carry weight and lead peers through responsibility, not popularity.</li>
-          <li><strong>Volunteer structure and role clarity:</strong> expectations that reduce churn, burnout, and inconsistency—so volunteers stay longer and lead better.</li>
-          <li><strong>Men's formation track:</strong> a structured pathway focused on discipline, service, and accountability—built to engage the most disengaged demographic.</li>
-          <li><strong>Weekly and monthly rhythm:</strong> a cadence that replaces constant event-building and allows formation to compound instead of resetting.</li>
-        </ul>
+        <details>
+          <summary>What's Included</summary>
+          <ul>
+            <li><strong>Operating doctrine for youth ministry:</strong> a clear articulation of purpose, expectations, boundaries, and non-negotiables—so leadership is principled, not improvised.</li>
+            <li><strong>Student responsibility pathway:</strong> defined expectations by age and maturity—so students move from attendance to service to leadership in a visible progression.</li>
+            <li><strong>Named student leadership roles:</strong> specific roles that train students to carry weight and lead peers through responsibility, not popularity.</li>
+            <li><strong>Volunteer structure and role clarity:</strong> expectations that reduce churn, burnout, and inconsistency—so volunteers stay longer and lead better.</li>
+            <li><strong>Men's formation track:</strong> a structured pathway focused on discipline, service, and accountability—built to engage the most disengaged demographic.</li>
+            <li><strong>Weekly and monthly rhythm:</strong> a cadence that replaces constant event-building and allows formation to compound instead of resetting.</li>
+          </ul>
+        </details>
         <p class="small">
           This is not a curriculum. It is not a content library. It is an operating system that makes formation possible.
         </p>
-
       </section>
 
-      <aside class="card" id="apply">
+      <!-- 5) Application (must keep id="apply") -->
+      <section class="card" id="apply">
         <span class="label">Application</span>
         <h2>Begin Application</h2>
         <p class="small" style="margin-bottom:12px;">
@@ -369,9 +411,10 @@
             src=""
           ></iframe>
         </div>
+      </section>
 
-        <div class="rule"></div>
-
+      <!-- 6) How It Works -->
+      <section class="card" id="how">
         <span class="label">How It Works</span>
         <h2>Application, Review, and Membership Environment</h2>
         <p>
@@ -383,25 +426,29 @@
         <p>
           If accepted, members enter an active environment designed around implementation—not passive consumption. The system is intended to be adapted to your constraints, not copied blindly.
         </p>
-        <ul>
-          <li><strong>Participation expectations:</strong> engagement with operating doctrine, discussion, and implementation prompts—so the system produces compounding change, not temporary inspiration.</li>
-          <li><strong>Training and instruction:</strong> periodic training focused on youth ministry structure, leadership bench building, discipline norms, and rhythm design.</li>
-          <li><strong>Network proximity:</strong> access to other Youth Ministers facing similar constraints—sharing tested structures, language that works with parents, and implementation patterns.</li>
-          <li><strong>Capacity discipline:</strong> controlled growth to preserve signal, accountability, and the seriousness required for real formation work.</li>
-        </ul>
+        <details>
+          <summary>Membership Details</summary>
+          <ul>
+            <li><strong>Participation expectations:</strong> engagement with operating doctrine, discussion, and implementation prompts—so the system produces compounding change, not temporary inspiration.</li>
+            <li><strong>Training and instruction:</strong> periodic training focused on youth ministry structure, leadership bench building, discipline norms, and rhythm design.</li>
+            <li><strong>Network proximity:</strong> access to other Youth Ministers facing similar constraints—sharing tested structures, language that works with parents, and implementation patterns.</li>
+            <li><strong>Capacity discipline:</strong> controlled growth to preserve signal, accountability, and the seriousness required for real formation work.</li>
+          </ul>
+        </details>
         <p class="small">
           Most visible shifts occur within 60–90 days simply because confusion decreases and expectations become clear.
         </p>
+      </section>
 
-        <div class="rule"></div>
-
+      <!-- 7) Support -->
+      <section class="card" id="support">
         <span class="label">Support</span>
         <h2>Support</h2>
         <p><strong>Email:</strong> <a href="mailto:office@joinaacwarfare.com">office@joinaacwarfare.com</a></p>
         <p class="small">
           For technical issues related to the application form, include a screenshot and the URL you used to access this page.
         </p>
-      </aside>
+      </section>
     </main>
 
     <footer>
