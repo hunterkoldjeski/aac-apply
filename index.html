@@ -40,10 +40,23 @@
       inset:0 0 auto 0;
       height: 560px;
       pointer-events:none;
-      z-index:-1;
+      z-index:-2;
       background:
         radial-gradient(1200px 700px at 20% 0%, rgba(43,103,255,.18), transparent 55%),
         radial-gradient(900px 600px at 80% 10%, rgba(120,68,255,.12), transparent 50%);
+    }
+
+    /* Background canvas for subtle watery ripples behind cards */
+    #bgCanvas{
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      pointer-events: none;
+      mix-blend-mode: screen;
+      filter: blur(6px) saturate(110%);
+      opacity: 0.9;
     }
 
     a{color:inherit}
@@ -54,11 +67,41 @@
     }
 
     header{
-      border: 1px solid var(--line);
+      border: 2px solid var(--line);
       background: linear-gradient(180deg, rgba(17,24,38,.86), rgba(17,24,38,.58));
       border-radius: var(--radius);
       padding: 30px 24px;
       box-shadow: var(--shadow);
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    header::before{
+      content: "";
+      position: absolute;
+      inset: -2px;
+      border-radius: var(--radius);
+      padding: 2px;
+      background: linear-gradient(
+        90deg,
+        rgba(43, 103, 255, 0.4) 0%,
+        rgba(120, 68, 255, 0.3) 25%,
+        rgba(43, 103, 255, 0.4) 50%,
+        rgba(120, 68, 255, 0.3) 75%,
+        rgba(43, 103, 255, 0.4) 100%
+      );
+      background-size: 200% 100%;
+      border-radius: var(--radius);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+      animation: none;
+      z-index: -1;
+    }
+
+    header:hover::before{
+      opacity: 1;
+      animation: borderCircle 12s linear infinite;
     }
 
     .kicker{
@@ -134,11 +177,50 @@
     }
 
     .card{
-      border: 1px solid var(--line);
+      border: 2px solid var(--line);
       background: var(--panel2);
       border-radius: var(--radius);
       padding: 18px 18px;
       box-shadow: 0 10px 30px rgba(0,0,0,.22);
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    .card::before{
+      content: "";
+      position: absolute;
+      inset: -2px;
+      border-radius: var(--radius);
+      padding: 2px;
+      background: linear-gradient(
+        90deg,
+        rgba(43, 103, 255, 0.4) 0%,
+        rgba(120, 68, 255, 0.3) 25%,
+        rgba(43, 103, 255, 0.4) 50%,
+        rgba(120, 68, 255, 0.3) 75%,
+        rgba(43, 103, 255, 0.4) 100%
+      );
+      background-size: 200% 100%;
+      border-radius: var(--radius);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+      animation: none;
+      z-index: -1;
+    }
+
+    .card:hover::before{
+      opacity: 1;
+      animation: borderCircle 12s linear infinite;
+    }
+
+    @keyframes borderCircle{
+      0%{
+        background-position: 0% 0%;
+      }
+      100%{
+        background-position: 200% 0%;
+      }
     }
 
     .label{
@@ -280,6 +362,7 @@
 </head>
 
 <body>
+  <canvas id="bgCanvas" aria-hidden="true"></canvas>
   <div class="wrap">
     <header>
       <p class="kicker">Application Portal - Alliance Advancing Christendom</p>
@@ -301,6 +384,22 @@
     </header>
 
     <main>
+
+      <!-- Who This Is For -->
+      <section class="card" id="who-for">
+        <span class="label">Who This Is For</span>
+        <h2>Who This Is For</h2>
+        <p>This is designed for Youth Ministers who:</p>
+        <ul>
+          <li>Care deeply about formation, not just attendance</li>
+          <li>Sense that the current model is fragile, even when things look “fine”</li>
+          <li>Are carrying more responsibility than authority</li>
+          <li>Want to build something that compounds year over year</li>
+          <li>Need structure that works inside real church constraints</li>
+        </ul>
+        <p class="small">You do not need to be burned out to benefit from this. You only need to be honest about where fragility exists.</p>
+      </section>
+
       <!-- 1) Purpose -->
       <section class="card" id="purpose">
         <span class="label">Purpose</span>
@@ -314,6 +413,21 @@
         <p>
           This system exists to address those structural problems directly—without asking you to overhaul your church, fight unnecessary battles, or become someone you are not.
         </p>
+      </section>
+
+      <!-- What This Is Not -->
+      <section class="card" id="what-not">
+        <span class="label">What This Is Not</span>
+        <h2>What This Is Not</h2>
+        <p>This system does not require:</p>
+        <ul>
+          <li>A church-wide reorganization</li>
+          <li>New committees or governance changes</li>
+          <li>Aggressive confrontation with parents or leadership</li>
+          <li>More programming</li>
+          <li>A bigger budget</li>
+        </ul>
+        <p class="small">It is intentionally scoped to what a Youth Minister can realistically implement.</p>
       </section>
 
       <!-- 2) Common Conditions -->
@@ -573,6 +687,72 @@
       document.getElementById("typeformFrame").src = tfUrl;
       const fallback = document.getElementById("fallbackLink");
       fallback.href = tfUrl;
+    })();
+  </script>
+  <script>
+    (function(){
+      const canvas = document.getElementById('bgCanvas');
+      if(!canvas) return;
+      const ctx = canvas.getContext('2d', { alpha: true });
+      let dpr = Math.max(1, window.devicePixelRatio || 1);
+
+      function resize(){
+        canvas.style.width = window.innerWidth + 'px';
+        canvas.style.height = window.innerHeight + 'px';
+        canvas.width = Math.floor(window.innerWidth * dpr);
+        canvas.height = Math.floor(window.innerHeight * dpr);
+        ctx.setTransform(dpr,0,0,dpr,0,0);
+      }
+      resize();
+      window.addEventListener('resize', resize);
+
+      // Cursor spotlight state
+      let cursor = { x: -9999, y: -9999 };
+      let spotlightEnabled = false;
+
+      // Track cursor for spotlight; do not enable when over cards/header/embed
+      window.addEventListener('mousemove', (ev) => {
+        const t = ev.target;
+        if (t && t.closest && (t.closest('.card') || t.closest('header') || t.closest('.embedShell'))) {
+          spotlightEnabled = false;
+          return;
+        }
+
+        cursor.x = ev.clientX;
+        cursor.y = ev.clientY;
+        spotlightEnabled = true;
+      }, { passive: true });
+
+      window.addEventListener('mouseout', () => { spotlightEnabled = false; });
+
+      let last = performance.now();
+      function easeOutCubic(t){ return 1 - Math.pow(1 - t, 3); }
+
+      function frame(now){
+        const dt = now - last; last = now;
+        ctx.clearRect(0,0, window.innerWidth, window.innerHeight);
+
+        // Draw subtle spotlight at cursor
+        if(spotlightEnabled){
+          const radius = Math.max(80, Math.min(260, Math.max(window.innerWidth, window.innerHeight) * 0.12));
+          const alpha = 0.10; // subtle
+          const g = ctx.createRadialGradient(cursor.x, cursor.y, 0, cursor.x, cursor.y, radius);
+          g.addColorStop(0, `rgba(100,160,255,${alpha})`);
+          g.addColorStop(0.6, `rgba(100,160,255,${alpha*0.35})`);
+          g.addColorStop(1, 'rgba(0,0,0,0)');
+
+          ctx.globalCompositeOperation = 'lighter';
+          ctx.fillStyle = g;
+          ctx.fillRect(0,0, window.innerWidth, window.innerHeight);
+          ctx.globalCompositeOperation = 'source-over';
+        }
+
+        // (No ripples — only spotlight)
+
+        requestAnimationFrame(frame);
+      }
+
+      requestAnimationFrame(frame);
     })();
   </script>
 </body>
